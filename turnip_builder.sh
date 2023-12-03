@@ -76,7 +76,7 @@ EOF
 
 
 echo "Generating build files ..." $'\n'
-meson build-android-aarch64 --cross-file "$workdir"/mesa-main/android-aarch64 -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=33 -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dfreedreno-kmds=kgsl -Dshader-cache-default=false -Dshader-cache-max-size=10G -Db_lto=true -Dvulkan-beta=true -Dzstd=true &> "$workdir"/meson_log
+meson build-android-aarch64 --cross-file "$workdir"/mesa-main/android-aarch64 -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=33 -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dfreedreno-kmds=kgsl -Dshader-cache-default=false -Dshader-cache-max-size=999G -Db_lto=true -Dvulkan-beta=true &> "$workdir"/meson_log
 cat "$workdir"/meson_log
 
 
