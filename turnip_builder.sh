@@ -65,7 +65,7 @@ cpp = ['ccache', '$ndk/aarch64-linux-android28-clang++', '-fno-exceptions', '-fn
 c_ld = 'lld'
 cpp_ld = 'lld'
 strip = '$ndk/aarch64-linux-android-strip'
-pkgconfig = ['env', 'PKG_CONFIG_LIBDIR=NDKDIR/pkgconfig', '/usr/bin/pkg-config']
+pkgconfig = ['env', 'PKG_CONFIG_LIBDIR=NDKDIR/pkgconfig', '/usr/bin/pkg-config', '--libs zstd']
 [host_machine]
 system = 'android'
 cpu_family = 'aarch64'
