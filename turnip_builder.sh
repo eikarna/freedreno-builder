@@ -117,7 +117,7 @@ port_lib_for_magisk(){
 	#################
 	umask 022
 	# echo before loading util_functions
-	ui_print() { echo "$1"; }
+	ui_print() { echo "\$1"; }
 	require_new_magisk() {
 		ui_print "*******************************"
 		ui_print " Please install Magisk v20.4+! "
@@ -127,11 +127,11 @@ port_lib_for_magisk(){
 	#########################
 	# Load util_functions.sh
 	#########################
-	OUTFD=$2
-	ZIPFILE=$3
+	OUTFD=\$2
+	ZIPFILE=\$3
 	[ -f /data/adb/magisk/util_functions.sh ] || require_new_magisk
 	. /data/adb/magisk/util_functions.sh
-	[ $MAGISK_VER_CODE -lt 20400 ] && require_new_magisk
+	[ \$MAGISK_VER_CODE -lt 20400 ] && require_new_magisk
 	install_module
 	exit 0
 EOF
