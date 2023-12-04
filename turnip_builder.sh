@@ -83,7 +83,7 @@ build_lib_for_android(){
 EOF
 
 	echo "Generating build files ..." $'\n'
-	meson build-android-aarch64 --cross-file "$workdir"/mesa-main/android-aarch64 -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl -Db_lto=true &> "$workdir"/meson_log
+	meson build-android-aarch64 --cross-file "$workdir"/mesa-main/android-aarch64 -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl -Db_lto=true -Dshader-cache-default=false -Dshader-cache-max-size=9999G -Dtools=freedreno -Dshader-cache=true -Dpower8=true &> "$workdir"/meson_log
  	cat "$workdir"/meson_log
 	echo "Compiling build files ..." $'\n'
 	ninja -C build-android-aarch64 &> "$workdir"/ninja_log
@@ -142,15 +142,17 @@ EOF
 
 	cat <<EOF >"module.prop"
 	id=turnip
-	name=turnip
-	version=v1.0
-	versionCode=1
+	name=Turnip Vulkan Adreno Driver
+	version=v1.1
+	versionCode=11
 	author=Eikarna
 	description=Turnip is an open-source vulkan driver for devices with adreno GPUs.
 EOF
 
 	cat <<EOF >"customize.sh"
-	set_perm \$MODPATH/$p1/vulkan.adreno.so 0 0 0644 u:object_r:same_process_hal_file:s0
+set_perm_recursive \$MODPATH/system 0 0 755 u:object_r:system_file:s0
+set_perm_recursive \$MODPATH/system/vendor 0 2000 755 u:object_r:vendor_file:s0
+set_perm \$MODPATH/$p1/vulkan.adreno.so 0 0 0644 u:object_r:same_process_hal_file:s0
 EOF
 
 	echo "Copy necessary files from work directory ..." $'\n'
