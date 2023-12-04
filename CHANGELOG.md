@@ -1,4 +1,4 @@
-# Release 14 (v1.1) - Monday, 4 December 2023
+# Release 17 (v1.1) - Monday, 4 December 2023
 ```
 - Change Clang++ Compiler based on Android 33 APIs (Android 13).
 - Add -O3 flags, which make binary run faster (Maybe).
