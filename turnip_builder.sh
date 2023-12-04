@@ -205,11 +205,13 @@ EOF
 		echo -e "$red Build failed! $nocolor" && exit 1
 	fi
 	echo "Packing files in to magisk module ..." $'\n'
-	cd $magiskdir && zip -r "$workdir/Turnip Vulkan Adreno Driver.zip" ./* &> dev/null
+	cd turnip_module
+        zip -r "$workdir/Turnip Vulkan Adreno Driver.zip" ./*
 	if ! [ -a "$workdir/Turnip Vulkan Adreno Driver.zip" ];
 		then echo -e "$red-Packing failed!$nocolor" && exit 1
 		else echo -e "$green-All done, you can take your module from here;$nocolor" && echo "$workdir"/turnip.zip
 	fi
+        cd ..
 }
 
 run_all
