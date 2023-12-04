@@ -98,11 +98,11 @@ build_lib_for_android32(){
 	cat <<EOF >"android-arm"
 	[binaries]
 	ar = '$ndk/llvm-ar'
-	c = ['ccache', '$ndk/arm-linux-androideabi-clang']
-	cpp = ['ccache', '$ndk/arm-linux-androideabi-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-static-libstdc++', '-O3']
+	c = ['ccache', '$ndk/armv7a-linux-androideabi33-clang']
+	cpp = ['ccache', '$ndk/armv7a-linux-androideabi33-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-static-libstdc++', '-O3']
 	c_ld = 'lld'
 	cpp_ld = 'lld'
-	strip = '$ndk/arm-linux-androideabi-strip'
+	strip = '$ndk/armv7a-linux-androideabi33-strip'
 	pkgconfig = ['env', 'PKG_CONFIG_LIBDIR=NDKDIR/pkgconfig', '/usr/bin/pkg-config']
 	[host_machine]
 	system = 'android'
