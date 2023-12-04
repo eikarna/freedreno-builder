@@ -133,7 +133,7 @@ EOF
 	name=turnip
 	version=v1.0
 	versionCode=1
-	author=eikarna
+	author=Eikarna
 	description=Turnip is an open-source vulkan driver for devices with adreno GPUs.
 EOF
 
