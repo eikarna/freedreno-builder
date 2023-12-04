@@ -112,41 +112,41 @@ port_lib_for_magisk(){
 	mkdir -p "$meta"
 
 	cat <<EOF >"$meta/update-binary"
-	#################
- 	# Initialization
-	#################
-	umask 022
-	# echo before loading util_functions
-	ui_print() { echo "\$1"; }
-	require_new_magisk() {
-		ui_print "*******************************"
-		ui_print " Please install Magisk v20.4+! "
-		ui_print "*******************************"
-		exit 1
-	}
-	#########################
-	# Load util_functions.sh
-	#########################
-	OUTFD=\$2
-	ZIPFILE=\$3
-	[ -f /data/adb/magisk/util_functions.sh ] || require_new_magisk
-	. /data/adb/magisk/util_functions.sh
-	[ \$MAGISK_VER_CODE -lt 20400 ] && require_new_magisk
-	install_module
-	exit 0
+#################
+# Initialization
+#################
+umask 022
+# echo before loading util_functions
+ui_print() { echo "\$1"; }
+require_new_magisk() {
+	ui_print "*******************************"
+	ui_print " Please install Magisk v20.4+! "
+	ui_print "*******************************"
+	exit 1
+}
+#########################
+# Load util_functions.sh
+#########################
+OUTFD=\$2
+ZIPFILE=\$3
+[ -f /data/adb/magisk/util_functions.sh ] || require_new_magisk
+. /data/adb/magisk/util_functions.sh
+[ \$MAGISK_VER_CODE -lt 20400 ] && require_new_magisk
+install_module
+exit 0
 EOF
 
 	cat <<EOF >"$meta/updater-script"
-	#MAGISK
+#MAGISK
 EOF
 
 	cat <<EOF >"module.prop"
-	id=turnip
-	name=Turnip Vulkan Adreno Driver
-	version=v1.1
-	versionCode=11
-	author=Eikarna
-	description=Turnip is an open-source vulkan driver for devices with adreno GPUs.
+id=turnip
+name=Turnip Vulkan Adreno Driver
+version=v1.1
+versionCode=11
+author=Eikarna
+description=Turnip is an open-source vulkan driver for devices with adreno GPUs.
 EOF
 
 	cat <<EOF >"customize.sh"
