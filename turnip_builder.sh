@@ -159,8 +159,8 @@ EOF
 	cp "$workdir"/vulkan.adreno.so "$magiskdir"/"$p1"
 
 	echo "Packing files in to magisk module ..." $'\n'
-	zip -r "$workdir"/turnip.zip ./* &> /dev/null
-	if ! [ -a "$workdir"/turnip.zip ];
+	zip -r "$workdir/Turnip Vulkan Adreno Driver.zip" ./* &> /dev/null
+	if ! [ -a "$workdir/Turnip Vulkan Adreno Driver.zip" ];
 		then echo -e "$red-Packing failed!$nocolor" && exit 1
 		else echo -e "$green-All done, you can take your module from here;$nocolor" && echo "$workdir"/turnip.zip
 	fi
