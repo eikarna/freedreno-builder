@@ -36,4 +36,4 @@ jobs:
         tag_name: workflow_${{github.run_number}}
         name: Release ${{github.run_number}}
         files: |
-           "turnip_workdir/Turnip Vulkan Adreno Driver.zip"
+           turnip_workdir/Turnip Vulkan Adreno Driver.zip
