@@ -14,7 +14,8 @@ clear
 run_all(){
 	check_deps
 	prepare_workdir
-	build_lib_for_android
+	build_lib_for_android64
+ 	build_lib_for_android32
 	port_lib_for_magisk
 }
 
@@ -62,7 +63,7 @@ prepare_workdir(){
 
 
 
-build_lib_for_android(){
+build_lib_for_android64(){
 	echo "Creating meson cross file ..." $'\n'
 	ndk="$workdir/$ndkver/toolchains/llvm/prebuilt/linux-x86_64/bin"
 
@@ -82,31 +83,51 @@ build_lib_for_android(){
 	endian = 'little'
 EOF
 
-	echo "Generating build files ..." $'\n'
+	echo "(arm64) Generating build files ..." $'\n'
 	meson build-android-aarch64 --cross-file "$workdir"/mesa-main/android-aarch64 -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl -Db_lto=true -Dshader-cache-default=false -Dshader-cache-max-size=9999G -Dtools=freedreno -Dshader-cache=true -Dpower8=true &> "$workdir"/meson_log
  	cat "$workdir"/meson_log
-	echo "Compiling build files ..." $'\n'
+	echo "(arm64) Compiling build files ..." $'\n'
 	ninja -C build-android-aarch64 &> "$workdir"/ninja_log
+ 	cat "$workdir"/ninja_log
+}
+
+build_lib_for_android32(){
+	echo "Creating meson cross file ..." $'\n'
+	ndk="$workdir/$ndkver/toolchains/llvm/prebuilt/linux-x86_64/bin"
+
+	cat <<EOF >"android-arm"
+	[binaries]
+	ar = '$ndk/llvm-ar'
+	c = ['ccache', '$ndk/arm-linux-androideabi-clang']
+	cpp = ['ccache', '$ndk/arm-linux-androideabi-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-static-libstdc++', '-O3']
+	c_ld = 'lld'
+	cpp_ld = 'lld'
+	strip = '$ndk/arm-linux-androideabi-strip'
+	pkgconfig = ['env', 'PKG_CONFIG_LIBDIR=NDKDIR/pkgconfig', '/usr/bin/pkg-config']
+	[host_machine]
+	system = 'android'
+	cpu_family = 'arm'
+	cpu = 'armv7'
+	endian = 'little'
+EOF
+
+	echo "(armv7) Generating build files ..." $'\n'
+	meson build-android-arm --cross-file "$workdir"/mesa-main/android-arm -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl -Db_lto=true -Dshader-cache-default=false -Dshader-cache-max-size=9999G -Dtools=freedreno -Dshader-cache=true -Dpower8=true &> "$workdir"/meson_log
+ 	cat "$workdir"/meson_log
+	echo "(armv7) Compiling build files ..." $'\n'
+	ninja -C build-android-arm &> "$workdir"/ninja_log
  	cat "$workdir"/ninja_log
 }
 
 
 
 port_lib_for_magisk(){
-	echo "Using patchelf to match soname ..."  $'\n'
-	cp "$workdir"/mesa-main/build-android-aarch64/src/freedreno/vulkan/libvulkan_freedreno.so "$workdir"
-	cd "$workdir"
-	patchelf --set-soname vulkan.adreno.so libvulkan_freedreno.so
-	mv libvulkan_freedreno.so vulkan.adreno.so
-
-	if ! [ -a vulkan.adreno.so ]; then
-		echo -e "$red Build failed! $nocolor" && exit 1
-	fi
-
-	echo "Prepare magisk module structure ..." $'\n'
+        echo "Prepare magisk module structure ..." $'\n'
 	p1="system/vendor/lib64/hw"
+        p2="system/vendor/lib/hw"
 	mkdir -p "$magiskdir" && cd "$_"
 	mkdir -p "$p1"
+        mkdir -p "$p2"
 
 	meta="META-INF/com/google/android"
 	mkdir -p "$meta"
@@ -153,11 +174,36 @@ EOF
 set_perm_recursive \$MODPATH/system 0 0 755 u:object_r:system_file:s0
 set_perm_recursive \$MODPATH/system/vendor 0 2000 755 u:object_r:vendor_file:s0
 set_perm \$MODPATH/$p1/vulkan.adreno.so 0 0 0644 u:object_r:same_process_hal_file:s0
+set_perm \$MODPATH/$p2/vulkan.adreno.so 0 0 0644 u:object_r:same_process_hal_file:s0
 EOF
 
-	echo "Copy necessary files from work directory ..." $'\n'
+	echo "(arm64) Using patchelf to match soname ..."  $'\n'
+	cp "$workdir"/mesa-main/build-android-aarch64/src/freedreno/vulkan/libvulkan_freedreno.so "$workdir"
+	cd "$workdir"
+	patchelf --set-soname vulkan.adreno.so libvulkan_freedreno.so
+	mv libvulkan_freedreno.so vulkan.adreno.so
+        
+        echo "(arm64) Copy necessary files from work directory ..." $'\n'
 	cp "$workdir"/vulkan.adreno.so "$magiskdir"/"$p1"
 
+
+	if ! [ -a vulkan.adreno.so ]; then
+		echo -e "$red Build failed! $nocolor" && exit 1
+	fi
+
+        echo "(armv7) Using patchelf to match soname ..."  $'\n'
+	cp "$workdir"/mesa-main/build-android-arm/src/freedreno/vulkan/libvulkan_freedreno.so "$workdir"
+	cd "$workdir"
+	patchelf --set-soname vulkan.adreno.so libvulkan_freedreno.so
+	mv libvulkan_freedreno.so vulkan.adreno.so
+        
+        echo "(armv7) Copy necessary files from work directory ..." $'\n'
+	cp "$workdir"/vulkan.adreno.so "$magiskdir"/"$p2"
+
+
+	if ! [ -a vulkan.adreno.so ]; then
+		echo -e "$red Build failed! $nocolor" && exit 1
+	fi
 	echo "Packing files in to magisk module ..." $'\n'
 	zip -r "$workdir/Turnip Vulkan Adreno Driver.zip" ./* &> /dev/null
 	if ! [ -a "$workdir/Turnip Vulkan Adreno Driver.zip" ];
