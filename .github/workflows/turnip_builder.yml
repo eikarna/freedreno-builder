@@ -1,4 +1,4 @@
-name: Build "turnip"
+name: Build Turnip Driver
 
 on:
   workflow_dispatch:
@@ -11,13 +11,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Prepare environment
+    - name: Prepare Environment
       run: |
         sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
         sudo apt update
         sudo apt build-dep mesa -y
     
-    - name: Execute build script
+    - name: Execute Build Script
       run: bash ./turnip_builder.sh
 
     - name: Upload a Build Artifact
@@ -28,11 +28,12 @@ jobs:
           turnip_workdir/ninja_log
           turnip_workdir/mesa-main/build-android-aarch64/meson-logs/meson-log.txt
       
-    - name: Release "turnip"
+    - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        body: Turnip magisk module
+        body_path: CHANGELOG.md
+        token: ${{ secrets.PAT_GITHUB_TOKEN }}
         tag_name: workflow_${{github.run_number}}
         name: Release ${{github.run_number}}
         files: |
-           turnip_workdir/turnip.zip
+           turnip_workdir/"Turnip - Vulkan Adreno Driver.zip
