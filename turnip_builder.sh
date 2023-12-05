@@ -84,7 +84,7 @@ build_lib_for_android64(){
 EOF
 
 	echo "(arm64) Generating build files ..." $'\n'
-	meson build-android-aarch64 --cross-file "$workdir"/mesa-main/android-aarch64 -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers=freedreno -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl,msm -Db_lto=true -Dshader-cache-default=false -Dshader-cache-max-size=9999G -Dtools=freedreno -Dshader-cache=true -Dpower8=true &> "$workdir"/meson_log
+	meson build-android-aarch64 --cross-file "$workdir"/mesa-main/android-aarch64 -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl,msm -Db_lto=true -Dshader-cache-default=false -Dshader-cache-max-size=9999G -Dtools=freedreno -Dshader-cache=true -Dpower8=true &> "$workdir"/meson_log
  	cat "$workdir"/meson_log
 	echo "(arm64) Compiling build files ..." $'\n'
 	ninja -C build-android-aarch64 &> "$workdir"/ninja_log
@@ -112,7 +112,7 @@ build_lib_for_android32(){
 EOF
 
 	echo "(armv7) Generating build files ..." $'\n'
-	meson build-android-arm --cross-file "$workdir"/mesa-main/android-arm -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers=freedreno -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl,msm -Db_lto=true -Dshader-cache-default=false -Dshader-cache-max-size=9999G -Dtools=freedreno -Dshader-cache=true -Dpower8=true &> "$workdir"/meson_log
+	meson build-android-arm --cross-file "$workdir"/mesa-main/android-arm -Dbuildtype=release -Dplatforms=android -Dplatform-sdk-version=$sdkver -Dandroid-stub=true -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dvulkan-beta=true -Dfreedreno-kmds=kgsl,msm -Db_lto=true -Dshader-cache-default=false -Dshader-cache-max-size=9999G -Dtools=freedreno -Dshader-cache=true -Dpower8=true &> "$workdir"/meson_log
  	cat "$workdir"/meson_log
 	echo "(armv7) Compiling build files ..." $'\n'
 	ninja -C build-android-arm &> "$workdir"/ninja_log
