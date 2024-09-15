@@ -7,7 +7,7 @@ on:
 
 jobs:
   start_building_turnip:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
@@ -16,7 +16,9 @@ jobs:
         sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
         sudo apt update
         sudo apt build-dep mesa -y
-        sudo apt install libdrm-dev -y
+        sudo apt install libdrm-dev python3 python-pip -y
+        sudo apt remove -y meson
+        sudo pip3 install --upgrade meson
     
     - name: Execute Build Script
       run: bash ./turnip_builder.sh
