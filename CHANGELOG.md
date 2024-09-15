@@ -1,3 +1,9 @@
+# PreRelease 53 (v1.2) - Sunday, 15 September 2024
+```
+- Upstreamed latest Mesa to v24.2.2
+- Same feature as before.
+```
+
 # Release 17 (v1.1) - Monday, 4 December 2023
 ```
 - Change Clang++ Compiler based on Android 33 APIs (Android 13).
