@@ -33,7 +33,7 @@ jobs:
           turnip_workdir/mesa-main/build-android-arm/meson-logs/meson-log.txt
       
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         body_path: CHANGELOG.md
         token: ${{ secrets.PAT_GITHUB_TOKEN }}
