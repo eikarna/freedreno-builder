@@ -5,8 +5,8 @@ nocolor='\033[0m'
 deps="meson ninja patchelf unzip curl pip flex bison zip"
 workdir="$(pwd)/turnip_workdir"
 magiskdir="$workdir/turnip_module"
-ndkver="android-ndk-r26b"
-sdkver="33"
+ndkver="android-ndk-r27"
+sdkver="latest"
 clear
 
 # there are 4 functions here, simply comment to disable.
