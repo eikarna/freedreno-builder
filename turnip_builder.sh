@@ -163,9 +163,9 @@ EOF
 
 	cat <<EOF >"module.prop"
 id=turnip
-name=Turnip Vulkan Adreno Driver
-version=v1.1
-versionCode=11
+name=Turnip Vulkan Adreno Driver (Beta)
+version=v1.2
+versionCode=12
 author=Eikarna
 description=Turnip is an open-source vulkan driver for devices with adreno GPUs.
 EOF
