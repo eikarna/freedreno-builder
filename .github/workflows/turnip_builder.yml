@@ -16,7 +16,7 @@ jobs:
         sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
         sudo apt update
         sudo apt build-dep mesa -y
-        sudo apt install libdrm-dev python3 python-pip -y
+        sudo apt install libdrm-dev python3 python-pip3 -y
         sudo apt remove -y meson
         sudo pip3 install --upgrade meson
     
